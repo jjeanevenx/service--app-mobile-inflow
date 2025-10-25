@@ -4,7 +4,7 @@ import { webSearchTool } from "../tools/webSearch.tool";
 import { getContentCuratorPrompt } from "../../utils/prompt";
 import { logger } from "../../utils/logger";
 
-logger.info("AI initialized with Gemini 1.5 Flash model");
+logger.info("Starting content curator flow setup...");
 const ai = genkit({
   plugins: [ googleAI() ],
   model: googleAI.model("gemini-1.5-flash")
