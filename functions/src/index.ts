@@ -8,11 +8,10 @@
  */
 
 import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
-import * as logger from "firebase-functions/logger";
+import {logger} from "../src/utils/logger";
 
 setGlobalOptions({ maxInstances: 10 });
 
-
+logger.info("functions ...");
 export { onUserInterestChange } from "./triggers/userInterestTrigger";
 

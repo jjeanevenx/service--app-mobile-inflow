@@ -1,7 +1,10 @@
 import { genkit, z } from "genkit";
 import { googleAI } from "@genkit-ai/googleai";
 import { webSearchTool } from "../tools/webSearch.tool";
+import { getContentCuratorPrompt } from "../../utils/prompt";
+import { logger } from "../../utils/logger";
 
+logger.info("AI initialized with Gemini 1.5 Flash model");
 const ai = genkit({
   plugins: [ googleAI() ],
   model: googleAI.model("gemini-1.5-flash")
@@ -24,14 +27,8 @@ export const contentCuratorFlow = ai.defineFlow(
   async (input) => {
     const { interest } = input;
 
-    const webResults = await webSearchTool({ query: interest });
-    const prompt = `
-      Você é um curador de conteúdo.
-      Dado o interesse "${interest}", analise os seguintes resultados:
-      ${JSON.stringify(webResults)}
-      Gere um array JSON com objetos contendo:
-        title, url, type, category, summary
-    `;
+    const webResults = await webSearchTool({ query: interest,  maxResults:20});
+    const prompt = getContentCuratorPrompt(interest, webResults);
 
     const { text } = await ai.generate({
       prompt,
