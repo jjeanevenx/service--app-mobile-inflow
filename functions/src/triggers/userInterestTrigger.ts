@@ -23,7 +23,7 @@ export const onUserInterestChange = functions.firestore
       const curatedContent = await contentCuratorFlow.run({ interest });
 
       for (const content of curatedContent.result) {
-            await addDocument("recommended_content", {userId, interest,...content});
+            await addDocument("conteudos_recomendados", {userId, interest, ...content});
         }
     }
 

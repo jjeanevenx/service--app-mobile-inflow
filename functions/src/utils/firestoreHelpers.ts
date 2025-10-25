@@ -3,6 +3,17 @@ import * as admin from "firebase-admin";
 if (!admin.apps.length) admin.initializeApp();
 const db = admin.firestore();
 
+export async function getDocuments(collection: string, queryField: {docId: string, name: string; value: any }) 
+{
+  const docs = await db
+    .collection(collection)
+    .where("uid", "==", queryField.docId)
+    .where(queryField.name, ">=", queryField.value)
+    .get();
+
+   return docs;
+}
+
 export async function addDocument<T extends Record<string, any>>(
   collection: string,
   data: T
@@ -24,12 +35,13 @@ export async function updateDocument<T extends Record<string, any>>(
 
 export async function deleteByField(
   collection: string,
-  field: string,
-  value: any
+  docId: string,
+  field: {name: string, value: string}
 ) {
   const snapshot = await db
     .collection(collection)
-    .where(field, "==", value)
+    .where("uid", "==", docId)
+    .where(field.name, "==", field.value)
     .get();
 
   const batch = db.batch();
