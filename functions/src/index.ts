@@ -13,5 +13,6 @@ import {logger} from "../src/utils/logger";
 setGlobalOptions({ maxInstances: 10 });
 
 logger.info("functions ...");
+export { onUserCreate } from "./triggers/newUserTrigger";
 export { onUserInterestChange } from "./triggers/userInterestTrigger";
 
