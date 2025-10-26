@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions/v1";
 import { learningPathFlow } from "../ai/flows/learningPath.flow";
-import { getDocuments, addDocument, deleteByField } from "../utils/firestoreHelpers";
+import { getByIdAndField, addDocument, deleteByField } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
 
 /**
@@ -18,7 +18,7 @@ export const onUserGoalsChange = functions.firestore
         const beforeGoals = before?.metas || [];
         const afterGoals = after?.metas || [];
 
-        // Detectar mudanças
+        logger.info("Detectar mudanças");
         const addedGoals = afterGoals.filter((g: string) => !beforeGoals.includes(g));
         const removedGoals = beforeGoals.filter((g: string) => !afterGoals.includes(g));
         const updatedGoals = afterGoals.filter(
@@ -32,7 +32,7 @@ export const onUserGoalsChange = functions.firestore
 
         logger.info("Alterações detectadas em metas", { userId, addedGoals, removedGoals });
 
-        //Deletar trilhas removidas
+        logger.info("Deletar trilhas removidas");
         for (const goal of removedGoals) {
 
             const field = {name: "meta", value: goal};
@@ -40,12 +40,12 @@ export const onUserGoalsChange = functions.firestore
             logger.info(`Trilha removida: ${goal}`);
         }
 
-        //Gerar ou atualizar trilhas novas/alteradas
+        logger.info("Gerar ou atualizar trilhas novas/alteradas");
         const goalsToProcess = [...addedGoals, ...updatedGoals];
         for (const goal of goalsToProcess) {
 
-          // Buscar conteúdos recomendados existentes
-          const contentSnapshot = await getDocuments("conteudos_recomendados", {docId: userId, name: "interest", value: goal});
+          logger.info("Buscar conteúdos recomendados existentes");
+          const contentSnapshot = await getByIdAndField("conteudos_recomendados", {docId: userId, name: "interest", value: goal});
 
           const existingContent = contentSnapshot.docs.map((doc) => doc.data());
           const path = await learningPathFlow.run({ goal, ...existingContent });

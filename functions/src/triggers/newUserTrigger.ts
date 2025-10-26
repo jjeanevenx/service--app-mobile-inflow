@@ -25,8 +25,8 @@ export const onUserCreate = functions
       uid,
       email: email || null,
       name: displayName || "Usuário",
-      interesses: [], // vazio inicialmente
-      metas: [], // vazio inicialmente
+      interesses: [],
+      metas: []
     };
       await addDocument("usuarios", userDoc);
       functions.logger.info(`Perfil do usuário ${uid} criado com sucesso.`);
