@@ -1,4 +1,4 @@
-import { PROMPT_CONTENT_CURATOR, PROMPT_CONTENT_PATH_CURATOR } from "../constants/prompt";
+import { PROMPT_CONTENT_CURATOR, PROMPT_CONTENT_PATH_CURATOR, PROMPT_NEWS_DISCOVERY } from "../constants/prompt";
 
 export const getContentCuratorPrompt = (
   interest: string,
@@ -18,4 +18,14 @@ export const getContentPathCuratorPrompt = (
     "#goal",
     goal
   ).replace("#content", JSON.stringify(combinedContent));
+};
+
+export const getNewsDescoveryCuratorPrompt = (
+  interest: string,
+  news: any[]
+): string => {
+  return PROMPT_NEWS_DISCOVERY.replace(
+    "#interest",
+    interest
+  ).replace("#news", JSON.stringify(news));
 };

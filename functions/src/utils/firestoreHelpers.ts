@@ -3,15 +3,18 @@ import * as admin from "firebase-admin";
 if (!admin.apps.length) admin.initializeApp();
 const db = admin.firestore();
 
-export async function getDocuments(collection: string, queryField: {docId: string, name: string; value: any }) 
+export async function getByIdAndField(collection: string, queryField: {docId: string, name: string; value: any }) 
 {
-  const docs = await db
+  return await db
     .collection(collection)
     .where("uid", "==", queryField.docId)
     .where(queryField.name, ">=", queryField.value)
     .get();
+}
 
-   return docs;
+export async function getAll(collection: string) 
+{
+  return await db.collection(collection).get();
 }
 
 export async function addDocument<T extends Record<string, any>>(

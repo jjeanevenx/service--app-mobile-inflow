@@ -69,3 +69,39 @@ export const PROMPT_CONTENT_PATH_CURATOR = `
       - Mantenha o idioma original dos títulos.
       - Resumos devem estar em português claro e objetivo.
 `;
+
+export const PROMPT_NEWS_DISCOVERY = `
+  Você é um assistente de notícias especializado em selecionar e resumir manchetes relevantes.
+
+  Tarefa:
+  Analise as manchetes e links abaixo sobre o tema: #interest.
+
+  Instruções:
+  1. Escolha as 2 notícias mais relevantes ao tema, priorizando:
+     - Atualidade (mais recentes primeiro).
+     - Relevância direta com o interesse.
+     - Fontes confiáveis (sites de notícia, portais reconhecidos, blogs especializados).
+  2. Para cada notícia selecionada:
+     - Gere um resumo breve, de no máximo 2 frases.
+     - Mantenha o idioma em português claro e objetivo, mesmo que a manchete esteja em outro idioma.
+  3. Retorne apenas um JSON válido, sem texto extra.
+
+  Formato de saída esperado (exemplo):
+  [
+    {
+      "title": "Avanços da inteligência artificial na medicina em 2025",
+      "link": "https://exemplo.com/ia-medicina",
+      "summary": "Reportagem sobre novas aplicações da IA em diagnósticos médicos e análise de exames.",
+      "interest": "inteligência artificial na medicina"
+    },
+    {
+      "title": "IA revoluciona o ensino superior",
+      "link": "https://exemplo.com/ia-educacao",
+      "summary": "Universidades adotam modelos generativos para personalizar o aprendizado e automatizar tarefas acadêmicas.",
+      "interest": "inteligência artificial na medicina"
+    }
+  ]
+
+  Noticías disponíveis:#news
+  Caso não existam notícias relevantes, retorne:[]
+`;
