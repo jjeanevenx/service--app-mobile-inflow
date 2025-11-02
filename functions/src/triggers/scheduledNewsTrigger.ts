@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { newsDiscoveryFlow } from "../../src/ai/flows/newsDiscovery.flow";
+import { newsDiscoveryFlow } from "../ai/flows/newsDiscovery.flow";
 import { addDocument, getAll } from "../utils/firestoreHelpers"
 import { logger } from "../utils/logger";
 
@@ -16,7 +16,7 @@ export const scheduledNewsDiscovery = functions.pubsub
     const snapshot = await getAll("usuarios");
     const allInterests = new Set<string>(); 
 
-    snapshot.forEach((doc) => {
+    snapshot.forEach((doc:any) => {
       const interests = doc.data().interesses || [];
       interests.forEach((i: string) => allInterests.add(i));
     });

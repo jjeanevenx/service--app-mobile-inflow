@@ -8,10 +8,16 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2020"
+    "target": "es2020",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+    "skipLibCheck": true
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src/**/*",
+    "src/types/**/*"
   ]
 }

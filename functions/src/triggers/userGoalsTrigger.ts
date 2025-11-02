@@ -47,7 +47,7 @@ export const onUserGoalsChange = functions.firestore
           logger.info("Buscar conteúdos recomendados existentes");
           const contentSnapshot = await getByIdAndField("conteudos_recomendados", {docId: userId, name: "interest", value: goal});
 
-          const existingContent = contentSnapshot.docs.map((doc) => doc.data());
+          const existingContent = contentSnapshot.docs.map((doc:any) => doc.data());
           const path = await learningPathFlow.run({ goal, ...existingContent });
 
           await addDocument("trilhas", path)

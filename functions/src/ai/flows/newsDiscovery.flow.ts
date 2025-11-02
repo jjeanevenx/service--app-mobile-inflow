@@ -5,10 +5,12 @@ import { googleAI } from "@genkit-ai/googleai";
 import { logger } from "../../utils/logger";
 
 
+logger.info("Starting news discovery flow setup...");
 const ai = genkit({
   plugins: [ googleAI() ],
   model: googleAI.model("gemini-1.5-flash")
 });
+
 export const newsDiscoveryFlow = ai.defineFlow(
   {
     name: "newsDiscovery",
