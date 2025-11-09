@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { learningPathFlow } from "../ai/services/learningPath.flow";
+import { learningPathFlow } from "../ai/services/learningPath";
 import { getByIdAndField, addDocument, deleteByField } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
 

@@ -1,14 +1,14 @@
 import { genaiClient } from "../client/genaiClient";
-import { interestSchema } from "../../model/interestSchema";
+import { learningPathSchema } from "../../model/interestSchema";
 import { logger } from "../../utils/logger";
-import {PROMPT_CONTENT_CURATOR} from "../../constants/prompt";
+import {PROMPT_CONTENT_PATH_CURATOR} from "../../constants/prompt";
 import { cleanJsonString } from "../../utils/jsonCleaning";
 
 
 
-export const contentCurator = async (topic: string) => {
-  logger.info(`Iniciando a geração de conteúdo com base nos interesses ${topic} ...`);
-  const text = await genaiClient(`${PROMPT_CONTENT_CURATOR.replace('#TOPIC', topic)}`);
+export const learningPath = async (goal: string) => {
+  logger.info(`Iniciando a geração de conteúdo com base na(s) meta(s): ${goal} ...`);
+  const text = await genaiClient(`${PROMPT_CONTENT_PATH_CURATOR.replace('#META', goal)}`);
 
   if(text === ''){
     return [];
@@ -26,5 +26,5 @@ export const contentCurator = async (topic: string) => {
     return parsed;
   }
 
-  return interestSchema.parse(parsed);
+  return learningPathSchema.parse(parsed);
 }

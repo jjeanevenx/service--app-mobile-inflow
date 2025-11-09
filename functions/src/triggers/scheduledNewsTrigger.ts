@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { newsDiscoveryFlow } from "../ai/services/newsDiscovery.flow";
+import { newsDiscovery } from "../ai/services/newsDiscovery";
 import { addDocument, getAll } from "../utils/firestoreHelpers"
 import { logger } from "../utils/logger";
 
@@ -26,18 +26,13 @@ export const scheduledNewsDiscovery = functions.pubsub
       return null;
     }
 
-    logger.info(`Total de interesses encontrados: ${allInterests.size}`);
-    logger.info("Executar flow para cada interesse");
-    for (const interest of allInterests) {
-      logger.info(`Buscando notícias para interesse: ${interest}`);
-      const newsItems = await newsDiscoveryFlow.run({ interest });
-
-      logger.info("Salvar resultados no Firestore");
-      for (const item of newsItems.result.slice(0, 2)) {
-        await addDocument("ultimas_noticias", item);;
-      }
-    }
-
+    // logger.info(`Buscando notícias para interesse: ${interest}`);
+    // const newsItems = await newsDiscoveryFlow(allInterests.);
+      
+    //   logger.info("Salvar resultados no Firestore");
+    //   await addDocument("ultimas_noticias", item);
+      
     logger.info("Descoberta de notícias concluída com sucesso.");
     return null;
+      
   });
