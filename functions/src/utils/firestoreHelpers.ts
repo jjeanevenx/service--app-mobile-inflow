@@ -22,8 +22,7 @@ export async function addDocument<T extends Record<string, any>>(
   data: T
 ) {
   return db.collection(collection).add({
-    ...data,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    ...data
   });
 }
 
