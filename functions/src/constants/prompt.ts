@@ -25,6 +25,11 @@ export const PROMPT_CONTENT_CURATOR = `
       {"title": "Vídeo: O futuro da inteligência artificial","url": "https://exemplo.com/video-futuro-ia","type": "vídeo","category": "tecnologia","summary": "Este vídeo explora as tendências emergentes em IA e suas potenciais aplicações futuras."}
     ]'
 
+    Importante:
+      - NÃO inclua comentários ou textos fora do JSON.
+      - O tamanho maxima da lista deve ser de 5 itens.
+      - Valide o formato JSON antes de retornar.
+
 `;
 
 
@@ -74,6 +79,9 @@ export const PROMPT_CONTENT_PATH_CURATOR = `
     Importante:
       - Mantenha o idioma original dos títulos.
       - verifique se os links estão acessíveis e corretos.
+      - NÃO inclua comentários ou textos fora do JSON.
+      - O tamanho maxima da lista deve ser de 2 itens.
+      - Valide o formato JSON antes de retornar.
 `;
 
 export const PROMPT_NEWS_DISCOVERY = `
@@ -112,5 +120,12 @@ export const PROMPT_NEWS_DISCOVERY = `
       "interest": "inteligência artificial na medicina"
     }
   ]'
+
+  Importante:
+      - Mantenha o idioma original dos títulos.
+      - verifique se os links estão acessíveis e corretos.
+      - NÃO inclua comentários ou textos fora do JSON.
+      - O tamanho maxima da lista deve ser de 2 itens.
+      - Valide o formato JSON antes de retornar.
   
 `;

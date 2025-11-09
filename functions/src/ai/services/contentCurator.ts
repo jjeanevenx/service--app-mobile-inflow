@@ -2,20 +2,22 @@ import { genaiClient } from "../client/genaiClient";
 import { interestSchema } from "../../model/interestSchema";
 import { logger } from "../../utils/logger";
 import {PROMPT_CONTENT_CURATOR} from "../../constants/prompt";
+import { cleanJsonString } from "../../utils/jsonCleaning";
 
 
 
-export const contentCurator = async (topic: string): Promise<typeof interestSchema._type> => {
+export const contentCurator = async (topic: string) => {
   logger.info(`Iniciando a geração de conteúdo com base nos interesses ${topic} ...`);
   const text = await genaiClient(`${PROMPT_CONTENT_CURATOR.replace('#TOPIC', topic)}`);
 
-  if(!text){
+  if(text === ''){
     return [];
   }
 
   let parsed = [];
   try{
-    parsed = JSON.parse(text);
+    const jsonCleaned = cleanJsonString(text?.toString() || '');
+    parsed = JSON.parse(jsonCleaned);
   }
   catch(error)
   {

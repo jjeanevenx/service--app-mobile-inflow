@@ -1,12 +1,7 @@
 import { logger } from "../../utils/logger";
 import { GoogleGenAI } from "@google/genai";
-//import { defineSecret } from "firebase-functions/params";
 
-
-// const GEMINI_API_KEY = defineSecret("GEMINI_API_KEY").value();
-// logger.info("Chave da API Gemini carregada com sucesso?", { loaded: !!GEMINI_API_KEY });
-
-const ai = new GoogleGenAI({  });
+const ai = new GoogleGenAI({});
 
 export const genaiClient = async (promt: string) => {
   try {
@@ -25,7 +20,7 @@ export const genaiClient = async (promt: string) => {
     });
 
     logger.info("Chamada ao GenAI concluída.");
-    return response.text;
+    return response.text?.trim();
   }
   catch (error) {
     logger.err("Erro ao gerar conteudos a partir da web com GenAI", error);
