@@ -1,4 +1,6 @@
-import {setGlobalOptions} from "firebase-functions";
+import { setGlobalOptions } from "firebase-functions";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 setGlobalOptions({ maxInstances: 10 });
 

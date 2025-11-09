@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { learningPathFlow } from "../ai/flows/learningPath.flow";
+import { learningPathFlow } from "../ai/services/learningPath.flow";
 import { getByIdAndField, addDocument, deleteByField } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
 
@@ -50,7 +50,7 @@ export const onUserGoalsChange = functions.firestore
           const existingContent = contentSnapshot.docs.map((doc:any) => doc.data());
           const path = await learningPathFlow.run({ goal, ...existingContent });
 
-          await addDocument("trilhas", path)
+          await addDocument("trilhas", path.result)
 
           logger.info(`Trilha gerada/atualizada para: ${goal}`);
         }

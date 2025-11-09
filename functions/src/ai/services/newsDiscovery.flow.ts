@@ -1,4 +1,4 @@
-import { webSearchTool } from "../tools/webSearch.tool";
+import { genaiClient } from "../client/genaiClient";
 import { getNewsDescoveryCuratorPrompt } from "../../utils/prompt";
 import { genkit, z } from "genkit";
 import { googleAI } from "@genkit-ai/googleai";
@@ -30,11 +30,10 @@ export const newsDiscoveryFlow = ai.defineFlow(
     const { interest } = input;
 
     logger.info("Buscar conteúdos na web");
-    const webResults = await webSearchTool({ query: `${interest} notícias recentes`, maxResults: 20 });
 
-    const prompt = getNewsDescoveryCuratorPrompt(interest, webResults);
-
-    const { text } = await ai.generate({ prompt });
-    return JSON.parse(text || "[]");
+    const prompt = getNewsDescoveryCuratorPrompt(interest, '');
+    const news = await genaiClient(`${prompt} notícias recentes`);
+    logger.info("Conteúdos obtidos:", { news });
+    return JSON.parse("[]");
   }
 );

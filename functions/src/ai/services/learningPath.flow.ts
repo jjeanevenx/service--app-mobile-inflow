@@ -1,12 +1,12 @@
-import {genkit, z} from 'genkit';
+import { genkit, z } from 'genkit';
 import { googleAI } from "@genkit-ai/googleai";
-import { webSearchTool } from '../tools/webSearch.tool';
+import { genaiClient } from '../client/genaiClient';
 import { logger } from "../../utils/logger";
 import { getContentPathCuratorPrompt } from '../../utils/prompt';
 
 logger.info("Starting learning path flow setup...");
 const ai = genkit({
-  plugins: [ googleAI() ],
+  plugins: [googleAI()],
   model: googleAI.model("gemini-1.5-flash")
 });
 
@@ -38,15 +38,24 @@ export const learningPathFlow = ai.defineFlow(
     }),
   },
   async (input) => {
-    const { goal, existingContent = [] } = input;
+    const { goal} = input;
 
-    const webResults = await webSearchTool({ query: goal, maxResults: 20 });
+    const contents = await genaiClient(goal);
 
-    const combined = [...existingContent, ...webResults].slice(0, 15);
+    //const combined = [...existingContent, ...contents].slice(0, 15);
 
-    const prompt = getContentPathCuratorPrompt(goal, combined);
+    const prompt = getContentPathCuratorPrompt(goal, contents);
 
-    const { text } = await ai.generate({ prompt });
+    // const { text } = await ai.generate({
+    //   prompt
+    // });
+
+
+    const { text } = await ai.generate({
+      system: 'construtor de trilhas de aprendizado',
+      prompt: prompt,
+      //messages: existingContent
+    });
     return JSON.parse(text || `{ "goal": "${goal}", "steps": [] }`);
   }
 );

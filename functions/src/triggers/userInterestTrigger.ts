@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { contentCuratorFlow } from "../ai/flows/contentCurator.flow";
+import { contentCurator } from "../ai/services/contentCurator";
 import { addDocument } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
 
@@ -19,13 +19,14 @@ export const onUserInterestChange = functions.firestore
 
     logger.info(`Novos interesses detectados para ${userId}:`, newInterests);
 
-    for (const interest of newInterests) {
-      const curatedContent = await contentCuratorFlow.run({ interest });
+    const curatedContent = await contentCurator(newInterests.join(','));
 
-      for (const content of curatedContent.result) {
-            await addDocument("conteudos_recomendados", {userId, interest, ...content});
-        }
+    if(curatedContent.length === 0){
+      logger.info("Nenhum conteúdo curado gerado.");
+      return;
     }
+    await addDocument("conteudos_recomendados", {userId, ...curatedContent});
+    
 
     logger.info("Curadoria concluída para", userId);
   });

@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { newsDiscoveryFlow } from "../ai/flows/newsDiscovery.flow";
+import { newsDiscoveryFlow } from "../ai/services/newsDiscovery.flow";
 import { addDocument, getAll } from "../utils/firestoreHelpers"
 import { logger } from "../utils/logger";
 

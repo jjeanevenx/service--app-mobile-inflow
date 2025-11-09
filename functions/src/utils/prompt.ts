@@ -2,7 +2,7 @@ import { PROMPT_CONTENT_CURATOR, PROMPT_CONTENT_PATH_CURATOR, PROMPT_NEWS_DISCOV
 
 export const getContentCuratorPrompt = (
   interest: string,
-  webResults: any[]
+  webResults: any
 ): string => {
   return PROMPT_CONTENT_CURATOR.replace(
     "#interest",
@@ -12,7 +12,7 @@ export const getContentCuratorPrompt = (
 
 export const getContentPathCuratorPrompt = (
   goal: string,
-  combinedContent: any[]
+  combinedContent: any
 ): string => {
   return PROMPT_CONTENT_PATH_CURATOR.replace(
     "#goal",
@@ -22,7 +22,7 @@ export const getContentPathCuratorPrompt = (
 
 export const getNewsDescoveryCuratorPrompt = (
   interest: string,
-  news: any[]
+  news: any
 ): string => {
   return PROMPT_NEWS_DISCOVERY.replace(
     "#interest",
