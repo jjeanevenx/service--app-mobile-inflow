@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions/v1";
 import { initializeApp, getApps } from "firebase-admin/app";
 import { addDocument } from "../utils/firestoreHelpers";
+import { colUsuarios } from "../utils/collection";
 
 if (getApps().length === 0) {
   initializeApp();
@@ -28,7 +29,7 @@ export const onUserCreate = functions
       interesses: [],
       metas: []
     };
-      await addDocument("usuarios", userDoc);
+      await addDocument(colUsuarios, userDoc);
       functions.logger.info(`Perfil do usuário ${uid} criado com sucesso.`);
     } catch (error) {
       functions.logger.error(`Erro ao criar perfil para o usuário ${uid}:`, error);

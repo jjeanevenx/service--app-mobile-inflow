@@ -80,7 +80,7 @@ export const PROMPT_CONTENT_PATH_CURATOR = `
       - Mantenha o idioma original dos títulos.
       - verifique se os links estão acessíveis e corretos.
       - NÃO inclua comentários ou textos fora do JSON.
-      - O tamanho maxima da lista deve ser de 2 itens.
+      - O tamanho maxima da lista deve ser de 10 itens.
       - Valide o formato JSON antes de retornar.
 `;
 

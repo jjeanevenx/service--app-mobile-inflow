@@ -1,7 +1,8 @@
 import * as functions from "firebase-functions/v1";
-import { learningPathFlow } from "../ai/services/learningPath";
 import { getByIdAndField, addDocument, deleteByField } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
+import { learningPath } from "../ai/services/learningPath";
+import { colTrilhas, colConteudosRecomendados } from "../utils/collection";
 
 /**
  * Disparada sempre que o campo "metas" de um usuário for alterado.
@@ -36,7 +37,7 @@ export const onUserGoalsChange = functions.firestore
         for (const goal of removedGoals) {
 
             const field = {name: "meta", value: goal};
-            await deleteByField("trilhas", userId, field);
+            await deleteByField(colTrilhas, userId, field);
             logger.info(`Trilha removida: ${goal}`);
         }
 
@@ -45,12 +46,14 @@ export const onUserGoalsChange = functions.firestore
         for (const goal of goalsToProcess) {
 
           logger.info("Buscar conteúdos recomendados existentes");
-          const contentSnapshot = await getByIdAndField("conteudos_recomendados", {docId: userId, name: "interest", value: goal});
+          const contentSnapshot = await getByIdAndField(colConteudosRecomendados, {id: userId, name: "interest", value: goal});
 
           const existingContent = contentSnapshot.docs.map((doc:any) => doc.data());
-          const path = await learningPathFlow.run({ goal, ...existingContent });
+          const trilhas = await learningPath(goal, existingContent);
+          
+          logger.info("Adicionar/atualizar trilhas:", { goal });
 
-          await addDocument("trilhas", path.result)
+          await addDocument(colTrilhas, {userId, ...trilhas})
 
           logger.info(`Trilha gerada/atualizada para: ${goal}`);
         }

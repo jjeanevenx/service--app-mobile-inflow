@@ -2,6 +2,7 @@ import * as functions from "firebase-functions/v1";
 import { contentCurator } from "../ai/services/contentCurator";
 import { addDocument } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
+import { colConteudosRecomendados } from "../utils/collection";
 
 export const onUserInterestChange = functions.firestore
   .document("usuarios/{userId}")
@@ -25,7 +26,7 @@ export const onUserInterestChange = functions.firestore
       logger.info("Nenhum conteúdo curado gerado.");
       return;
     }
-    await addDocument("conteudos_recomendados", {userId, ...curatedContent});
+    await addDocument(colConteudosRecomendados, {userId, ...curatedContent});
     
 
     logger.info("Curadoria concluída para", userId);

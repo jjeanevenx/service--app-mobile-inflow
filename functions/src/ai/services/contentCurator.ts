@@ -7,7 +7,7 @@ import { cleanJsonString } from "../../utils/jsonCleaning";
 
 
 export const contentCurator = async (topic: string) => {
-  logger.info(`Iniciando a geração de conteúdo com base nos interesses ${topic} ...`);
+  logger.info(`Iniciando a geração de conteúdo com base no(s) interesse(s): ${topic} ...`);
   const text = await genaiClient(`${PROMPT_CONTENT_CURATOR.replace('#TOPIC', topic)}`);
 
   if(text === ''){
@@ -16,8 +16,8 @@ export const contentCurator = async (topic: string) => {
 
   let parsed = [];
   try{
+    logger.info("Limpa e parseia resposta do content curator");
     const jsonCleaned = cleanJsonString(text?.toString() || '');
-    logger.info("Resposta limpa do content curator:", { jsonCleaned });
     parsed = JSON.parse(jsonCleaned);
   }
   catch(error)

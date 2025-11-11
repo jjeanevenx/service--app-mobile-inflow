@@ -6,18 +6,20 @@ import { cleanJsonString } from "../../utils/jsonCleaning";
 
 
 
-export const learningPath = async (goal: string) => {
-  logger.info(`Iniciando a geração de conteúdo com base na(s) meta(s): ${goal} ...`);
-  const text = await genaiClient(`${PROMPT_CONTENT_PATH_CURATOR.replace('#META', goal)}`);
+export const learningPath = async (goal: string, existingContent: any[]) => {
+  logger.info(`Iniciando a geração de conteúdo com base na meta: ${goal} ...`);
+  const text = await genaiClient(`${PROMPT_CONTENT_PATH_CURATOR
+                                          .replace('#META', goal)
+                                          .replace('#CONTEUDO', JSON.stringify(existingContent))}`);
 
-  if(text === ''){
+  if(text === '' || text == undefined){
     return [];
   }
 
   let parsed = [];
   try{
+    logger.info("Limpa e parseia resposta da criação de trilha de aprendizado");
     const jsonCleaned = cleanJsonString(text?.toString() || '');
-    logger.info("Resposta limpa do content curator:", { jsonCleaned });
     parsed = JSON.parse(jsonCleaned);
   }
   catch(error)
