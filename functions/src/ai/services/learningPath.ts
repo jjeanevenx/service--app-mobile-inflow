@@ -1,5 +1,5 @@
 import { genaiClient } from "../client/genaiClient";
-import { learningPathSchema } from "../../model/interestSchema";
+import { learningPathSchema } from "../../models/learningPath.schema";
 import { logger } from "../../utils/logger";
 import {PROMPT_CONTENT_PATH_CURATOR} from "../../constants/prompt";
 import { cleanJsonString } from "../../utils/jsonCleaning";

@@ -1,5 +1,5 @@
 import { genaiClient } from "../client/genaiClient";
-import { newsSchema } from "../../model/interestSchema";
+import { newsSchema } from "../../models/news.schema";
 import { logger } from "../../utils/logger";
 import {PROMPT_NEWS_DISCOVERY} from "../../constants/prompt";
 import { cleanJsonString } from "../../utils/jsonCleaning";
