@@ -74,4 +74,3 @@ Simular eventos locais:
 
 - Logs locais: terminal do emulador.
 - Logs em produção: `firebase functions:log`.
-
