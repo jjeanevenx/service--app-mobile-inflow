@@ -7,4 +7,5 @@ export const interestSchema = z.array(
     type: z.string(),
     category: z.string(),
     summary: z.string(),
+    thumbnailUrl: z.string().optional()
   }));

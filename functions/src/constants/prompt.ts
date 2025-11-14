@@ -16,13 +16,14 @@ export const PROMPT_CONTENT_CURATOR = `
        - "type": tipo do conteúdo (ex.: "artigo", "notícia", "vídeo", "blog post", "pesquisa acadêmica").
        - "category": categoria temática (ex.: "tecnologia", "saúde", "educação").
        - "summary": resumo objetivo de até 2 frases, no mesmo idioma do título.
+       - "thumbnailUrl": URL da imagem em miniatura (se disponível).
     4. Se nenhum conteúdo relevante for encontrado, retorne: '[]'.
     5. Verifique se o link está acessível e correto.
 
     Formato de saída esperado (exemplo):
     '[
-      {"title": "Como a IA está transformando a educação","url": "https://exemplo.com/ia-educacao","type": "artigo","category": "educação","summary": "O artigo discute como ferramentas de IA estão sendo usadas para personalizar o aprendizado e automatizar tarefas educacionais."},
-      {"title": "Vídeo: O futuro da inteligência artificial","url": "https://exemplo.com/video-futuro-ia","type": "vídeo","category": "tecnologia","summary": "Este vídeo explora as tendências emergentes em IA e suas potenciais aplicações futuras."}
+      {"title": "Como a IA está transformando a educação","url": "https://exemplo.com/ia-educacao","type": "artigo","category": "educação","summary": "O artigo discute como ferramentas de IA estão sendo usadas para personalizar o aprendizado e automatizar tarefas educacionais.", thumbnailUrl: "https://exemplo.com/imagem-ia-educacao.jpg"},
+      {"title": "Vídeo: O futuro da inteligência artificial","url": "https://exemplo.com/video-futuro-ia","type": "vídeo","category": "tecnologia","summary": "Este vídeo explora as tendências emergentes em IA e suas potenciais aplicações futuras.", thumbnailUrl: "https://exemplo.com/imagem-video-ia.jpg"}
     ]'
 
     Importante:
@@ -65,13 +66,15 @@ export const PROMPT_CONTENT_PATH_CURATOR = `
           "order": 1,
           "title": "Fundamentos de HTML e CSS",
           "url": "https://exemplo.com/html-css-basico",
-          "summary": "Introdução à estrutura e estilização de páginas web. Essencial para compreender os conceitos base antes do JavaScript."
+          "summary": "Introdução à estrutura e estilização de páginas web. Essencial para compreender os conceitos base antes do JavaScript.",
+          "thumbnailUrl": "https://exemplo.com/imagem-html-css.jpg"
         },
         {
           "order": 2,
           "title": "Introdução ao React",
           "url": "https://exemplo.com/introducao-react",
-          "summary": "Explica os conceitos fundamentais de componentes, estado e propriedades no React."
+          "summary": "Explica os conceitos fundamentais de componentes, estado e propriedades no React.",
+          "thumbnailUrl": "https://exemplo.com/imagem-react.jpg"
         }
       ]
     }'
@@ -111,13 +114,15 @@ export const PROMPT_NEWS_DISCOVERY = `
       "title": "Avanços da inteligência artificial na medicina em 2025",
       "link": "https://exemplo.com/ia-medicina",
       "summary": "Reportagem sobre novas aplicações da IA em diagnósticos médicos e análise de exames.",
-      "interest": "inteligência artificial na medicina"
+      "interest": "inteligência artificial na medicina",
+      "thumbnailUrl": "https://exemplo.com/imagem-ia-medicina.jpg"
     },
     {
       "title": "IA revoluciona o ensino superior",
       "link": "https://exemplo.com/ia-educacao",
       "summary": "Universidades adotam modelos generativos para personalizar o aprendizado e automatizar tarefas acadêmicas.",
-      "interest": "inteligência artificial na medicina"
+      "interest": "inteligência artificial na medicina",
+      "thumbnailUrl": "https://exemplo.com/imagem-ia-educacao.jpg"
     }
   ]'
 

@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { contentCurator } from "../ai/services/contentCurator";
+import { contentCurator } from "../ai/services/contentCuratorService";
 import { addDocument } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
 import { colConteudosRecomendados } from "../utils/collection";
@@ -7,6 +7,9 @@ import { colConteudosRecomendados } from "../utils/collection";
 export const onUserInterestChange = functions.firestore
   .document("usuarios/{userId}")
   .onWrite(async (change, context) => {
+
+    try {
+      
     const before = change.before.data();
     const after = change.after.data();
     const userId = context.params.userId;
@@ -26,8 +29,18 @@ export const onUserInterestChange = functions.firestore
       logger.info("Nenhum conteúdo curado gerado.");
       return;
     }
-    await addDocument(colConteudosRecomendados, {userId, ...curatedContent});
-    
 
+    if(curatedContent == null || curatedContent.length > 0)
+    {
+      return;
+    }
+    await addDocument(colConteudosRecomendados, {userId, ...curatedContent});
     logger.info("Curadoria concluída para", userId);
-  });
+
+
+    } catch (error) {
+      logger.err(`Erro ao processar interesses do usuário ${context.params.userId}:`, error);
+      throw error;
+    }
+
+});

@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v1";
-import { newsDiscovery } from "../ai/services/newsDiscovery";
+import { newsDiscovery } from "../ai/services/newsDiscoveryService";
 import { addDocument, getUsersAtiveLastThirtyMins } from "../utils/firestoreHelpers"
 import { logger } from "../utils/logger";
 import { colUltimasNoticias, colUsuarios } from "../utils/collection";
@@ -11,23 +11,34 @@ import { colUltimasNoticias, colUsuarios } from "../utils/collection";
 export const scheduledNewsDiscovery = functions.pubsub
   .schedule("every 5 minutes")
   .onRun(async () => {
-    logger.info("Iniciando descoberta proativa de notícias...");
+    try {
 
-    const usersSnapshot = await getUsersAtiveLastThirtyMins(colUsuarios);
+      logger.info("Iniciando descoberta proativa de notícias...");
 
-    for (const userDoc of usersSnapshot. docs) {
-      const userData = userDoc.data();
-      const interests = userData.interesses || [];
-      if (interests.length === 0) {
-        logger.info(`Usuário ${userDoc.id} não possui interesses. Pulando...`);
-        continue;
+      const usersSnapshot = await getUsersAtiveLastThirtyMins(colUsuarios);
+
+      for (const userDoc of usersSnapshot.docs) {
+        const userData = userDoc.data();
+        const interests = userData.interesses || [];
+        if (interests.length === 0) {
+          logger.info(`Usuário ${userDoc.id} não possui interesses. Pulando...`);
+          continue;
+        }
+        logger.info(`Usuário ativo recentemente: ${userDoc.id}`, { lastActiveAt: userData.lastActiveAt });
+        const newsItems = await newsDiscovery(Array.from(interests).join(", "));
+
+        if (newsItems.length === 0) {
+          logger.info(`Nenhuma notícia encontrada para o usuário ${userDoc.id}.`);
+          continue;
+        }
+        await addDocument(colUltimasNoticias, { userId: userDoc.id, newsItems });
       }
-      logger.info(`Usuário ativo recentemente: ${userDoc.id}`, { lastActiveAt: userData.lastActiveAt });
-      const newsItems = await newsDiscovery(Array.from(interests).join(", "));
-      await addDocument(colUltimasNoticias, { userId: userDoc.id, newsItems });
+      logger.info("Descoberta de notícias concluída com sucesso.");
+      logger.info(`usuários ativos recentemente encontrados: ${usersSnapshot.size}`);
+      return null;
+    } catch (error) {
+      logger.err("Erro durante a descoberta proativa de notícias:", error);
+      return null;
     }
-    logger.info("Descoberta de notícias concluída com sucesso.");
-    logger.info(`usuários ativos recentemente encontrados: ${usersSnapshot.size}`);
-    return null;
-      
+
   });

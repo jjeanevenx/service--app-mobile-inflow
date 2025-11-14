@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions/v1";
 import { getByIdAndField, addDocument, deleteByField } from "../utils/firestoreHelpers";
 import { logger } from "../utils/logger";
-import { learningPath } from "../ai/services/learningPath";
+import { learningPath } from "../ai/services/learningPathService";
 import { colTrilhas, colConteudosRecomendados } from "../utils/collection";
 
 /**
