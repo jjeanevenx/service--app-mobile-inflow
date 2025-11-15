@@ -53,6 +53,7 @@ export const onUserGoalsChange = functions.firestore
           
           logger.info("Adicionar/atualizar trilhas:", { goal });
 
+          if(trilhas.length === 0){ continue; }
           await addDocument(colTrilhas, {userId, ...trilhas})
 
           logger.info(`Trilha gerada/atualizada para: ${goal}`);

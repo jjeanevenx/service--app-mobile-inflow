@@ -29,11 +29,7 @@ export const onUserInterestChange = functions.firestore
       logger.info("Nenhum conteúdo curado gerado.");
       return;
     }
-
-    if(curatedContent == null || curatedContent.length > 0)
-    {
-      return;
-    }
+    
     await addDocument(colConteudosRecomendados, {userId, ...curatedContent});
     logger.info("Curadoria concluída para", userId);
 
