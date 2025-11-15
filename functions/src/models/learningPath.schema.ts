@@ -7,7 +7,6 @@ export const learningPathSchema = z.object({
       order: z.number(),
       title: z.string(),
       url: z.string().url(),
-      summary: z.string(),
-      thumbnailUrl: z.string().optional()
+      summary: z.string()
     }))
 });

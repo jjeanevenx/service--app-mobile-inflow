@@ -5,6 +5,5 @@ export const newsSchema = z.array(
     title: z.string(),
     link: z.string().url(),
     summary: z.string(),
-    interest: z.string(),
-    thumbnailUrl: z.string().optional()
+    interest: z.string()
   }));
