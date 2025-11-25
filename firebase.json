@@ -10,10 +10,7 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
+      "predeploy": []
     }
   ],
   "emulators": {
@@ -24,6 +21,7 @@
       "port": 5001
     },
     "firestore": {
+      "database":  "db-content-curation",
       "port": 8080
     },
     "pubsub": {

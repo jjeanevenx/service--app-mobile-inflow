@@ -7,13 +7,10 @@ module.exports = {
   roots: ["<rootDir>/test"],
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules", "src"],
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.jest.json"
-    }
-  },
   transform: {
-    "^.+\\.(ts|tsx)$": ["ts-jest", { isolatedModules: true }]
-  }
+    "^.+\\.(ts|tsx)$": ["ts-jest", {
+      tsconfig: "tsconfig.jest.json",
+    }],
+  },
 };
 

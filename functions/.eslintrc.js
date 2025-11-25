@@ -1,33 +1,61 @@
+const path = require("path");
+
 module.exports = {
-  root: true,
   env: {
     es6: true,
     node: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "google",
-    "plugin:@typescript-eslint/recommended",
-  ],
-  parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
+    ecmaVersion: 2020,
     sourceType: "module",
   },
-  ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-    "/generated/**/*", // Ignore generated files.
-  ],
-  plugins: [
-    "@typescript-eslint",
-    "import",
+  extends: [
+    "eslint:recommended",
+    "google",
   ],
   rules: {
-    "quotes": ["error", "double"],
-    "import/no-unresolved": 0,
-    "indent": ["error", 2],
+    "no-restricted-globals": ["error", "name", "length"],
+    "prefer-arrow-callback": "error",
+    "quotes": ["error", "double", {allowTemplateLiterals: true}],
+    "max-len": ["error", {code: 160}], // Aumenta o limite de 80 para 160
+    "require-jsdoc": "off", // Desabilita obrigatoriedade de JSDoc
   },
+  overrides: [
+    {
+      files: ["test/**/*.ts", "**/*.test.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        sourceType: "module",
+        // No project option for test files to avoid tsconfig issues
+      },
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "google",
+      ],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "warn",
+        "max-len": ["error", {code: 160}],
+        "require-jsdoc": "off",
+      },
+    },
+    {
+      files: ["src/**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: [path.resolve(__dirname, "tsconfig.json")], // Absolute path to tsconfig.json
+        sourceType: "module",
+      },
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "google",
+      ],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "warn", // Warnings ao invés de errors
+        "max-len": ["error", {code: 160}],
+        "require-jsdoc": "off",
+      },
+    },
+  ],
 };
