@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+import {jest} from '@jest/globals';
 
 export const mockBatch = {
   set: jest.fn(),
@@ -14,7 +14,7 @@ export const mockFirestore = {
   batch: jest.fn(() => mockBatch),
 };
 
-jest.mock("firebase-admin", () => ({
+jest.mock('firebase-admin', () => ({
   initializeApp: jest.fn(),
   firestore: () => mockFirestore,
 }));
