@@ -2,7 +2,7 @@
 
 Serviço de funções Cloud Functions para processamento de eventos de usuários, curadoria de conteúdo via IA, trilhas de aprendizagem e descoberta de notícias.
 
-## 📋 Visão Geral
+## Visão Geral
 
 O serviço processa eventos do Firebase para:
 - Criar perfis de usuários automaticamente
@@ -12,7 +12,7 @@ O serviço processa eventos do Firebase para:
 
 **Tecnologias:** Firebase Functions, Firestore, Google GenAI, Node.js 22
 
-## 🚀 Funções Disponíveis
+## Funções Disponíveis
 
 | Função | Gatilho | Descrição |
 |--------|---------|-----------|
@@ -21,7 +21,7 @@ O serviço processa eventos do Firebase para:
 | `onUserGoalsChange` | Firestore: update em `usuarios/{userId}` | Sincroniza trilhas de aprendizagem com metas do usuário |
 | `scheduledNewsDiscovery` | PubSub (a cada 12h) | Descobre notícias relevantes para usuários ativos |
 
-## 🛠️ Desenvolvimento Local
+## Desenvolvimento Local
 
 ### Pré-requisitos
 
@@ -76,7 +76,7 @@ GOOGLE_APPLICATION_CREDENTIALS=caminho/para/service-account.json
 
 Ou configure Application Default Credentials (ADC) para desenvolvimento.
 
-## 📤 Deploy para Firebase
+##  Deploy para Firebase
 
 ### Deploy Completo
 
@@ -115,13 +115,13 @@ npm run logs
 firebase functions:log --only onUserCreate
 ```
 
-## 📊 Observabilidade
+## Observabilidade
 
 - **Logs locais:** Terminal do emulador
 - **Logs em produção:** `npm run logs` ou `firebase functions:log`
 - **Monitoramento:** Firebase Console → Functions → Logs
 
-## 🧪 Testes
+## Testes
 
 ```bash
 # Executar testes
@@ -134,7 +134,7 @@ npm run test:watch
 npm run test:coverage
 ```
 
-## 📝 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 functions/
