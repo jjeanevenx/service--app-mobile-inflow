@@ -10,10 +10,14 @@ export const PROMPT_CONTENT_CURATOR = `
     Instruções:
     1. Avalie a relevância de cada resultado.
     2. Gere apenas um array JSON válido, sem texto adicional.
-    3. Cada objeto deve conter os seguintes campos:
+    3. Cada objeto deve conter os seguintes campos obrigatórios:
        - "title": título do conteúdo.
-       - "url": link original.
+       - "url": link original (URL completa e válida).
+       - "author": nome do autor ou fonte do conteúdo.
+       - "publishedAt": data de publicação no formato string (ex.: "2025-01-15" ou "15/01/2025").
+       - "readTime": tempo estimado de leitura no formato string (ex.: "5 min", "10 minutos", "1 hora.").
        - "type": tipo do conteúdo (ex.: "artigo", "notícia", "vídeo", "blog post", "pesquisa acadêmica").
+       - "temperature": número entre 0 e 1 representando a relevância/qualidade do conteúdo (0 = baixa, 1 = alta).
        - "category": categoria temática (ex.: "tecnologia", "saúde", "educação").
        - "summary": resumo objetivo de até 2 frases, no mesmo idioma do título.
     4. Se nenhum conteúdo relevante for encontrado, retorne: '[]'.
@@ -21,15 +25,39 @@ export const PROMPT_CONTENT_CURATOR = `
 
     Formato de saída esperado (exemplo):
     '[
-      {"title": "Como a IA está transformando a educação","url": "https://exemplo.com/ia-educacao","type": "artigo","category": "educação","summary": "O artigo discute como ferramentas de IA estão sendo usadas para personalizar o aprendizado e automatizar tarefas educacionais."},
-      {"title": "Vídeo: O futuro da inteligência artificial","url": "https://exemplo.com/video-futuro-ia","type": "vídeo","category": "tecnologia","summary": "Este vídeo explora as tendências emergentes em IA e suas potenciais aplicações futuras."}
+      {
+        "title": "Como a IA está transformando a educação",
+        "url": "https://exemplo.com/ia-educacao",
+        "author": "João Silva",
+        "publishedAt": "2025-01-15",
+        "readTime": "5 min",
+        "type": "artigo",
+        "temperature": 0.9,
+        "category": "educação",
+        "summary": "O artigo discute como ferramentas de IA estão sendo usadas para personalizar o aprendizado e automatizar tarefas educacionais."
+      },
+      {
+        "title": "Vídeo: O futuro da inteligência artificial",
+        "url": "https://exemplo.com/video-futuro-ia",
+        "author": "Maria Santos",
+        "publishedAt": "2025-01-10",
+        "readTime": "12 min",
+        "type": "vídeo",
+        "temperature": 0.85,
+        "category": "tecnologia",
+        "summary": "Este vídeo explora as tendências emergentes em IA e suas potenciais aplicações futuras."
+      }
     ]'
 
     Importante:
       - NÃO inclua comentários ou textos fora do JSON.
-      - O tamanho maxima da lista deve ser de 5 itens.
+      - O tamanho máximo da lista deve ser de 5 itens.
       - Valide o formato JSON antes de retornar.
-
+      - Todos os campos são obrigatórios: title, url, author, publishedAt, readTime, type, temperature, category, summary.
+      - O campo "temperature" deve ser um número entre 0 e 1.
+      - Se não for possível determinar o readTime, fornece uma estimativa de tempo de leitura.
+      - Se não for possível determinar o author, fornece "Desconhecido".
+      - Se o url for inacessível, não inclua o item na lista.
 `;
 
 
@@ -56,32 +84,79 @@ export const PROMPT_CONTENT_PATH_CURATOR = `
     2.2. Selecione apenas os mais relevantes ao objetivo.
     3. Para cada etapa, escreva um resumo claro e curto (máximo 2 frases).
     4. Retorne apenas um JSON válido, no formato abaixo — sem texto adicional fora do JSON.
+    5. Quando o conteúdo for um vídeo sempre verifica se o video ainda está disponível, caso não esteja, não inclua o item na lista.
 
     Formato de saída esperado (exemplo):
     '{
+      "title": "Trilha de Aprendizado: Desenvolvimento Web com React",
       "goal": "Aprender desenvolvimento web com React",
-      "steps": [
+      "description": "Uma trilha completa para dominar React do básico ao avançado",
+      "moduleCount": 2,
+      "totalHours": 40,
+      "difficulty": "intermediário",
+      "modules": [
         {
-          "order": 1,
-          "title": "Fundamentos de HTML e CSS",
-          "url": "https://exemplo.com/html-css-basico",
-          "summary": "Introdução à estrutura e estilização de páginas web. Essencial para compreender os conceitos base antes do JavaScript."
+          "title": "Fundamentos de Desenvolvimento Web",
+          "order": "1",
+          "description": "Módulo introdutório sobre HTML, CSS e JavaScript",
+          "lessonCount": 5,
+          "totalHours": 15,
+          "difficulty": "iniciante",
+          "lessons": [
+            {
+              "order": "1",
+              "title": "Fundamentos de HTML e CSS",
+              "url": "https://exemplo.com/html-css-basico",
+              "duration": "3 horas",
+              "author": "Autor Exemplo",
+              "category": "Frontend",
+              "summary": "Introdução à estrutura e estilização de páginas web. Essencial para compreender os conceitos base antes do JavaScript."
+            },
+            {
+              "order": "2",
+              "title": "Introdução ao JavaScript",
+              "url": "https://exemplo.com/javascript-basico",
+              "duration": "4 horas",
+              "author": "Autor Exemplo",
+              "category": "Frontend",
+              "summary": "Conceitos fundamentais de JavaScript para desenvolvimento web moderno."
+            }
+          ]
         },
         {
-          "order": 2,
-          "title": "Introdução ao React",
-          "url": "https://exemplo.com/introducao-react",
-          "summary": "Explica os conceitos fundamentais de componentes, estado e propriedades no React."
+          "title": "React: Do Básico ao Avançado",
+          "order": "2",
+          "description": "Aprofundamento em React e seus conceitos principais",
+          "lessonCount": 5,
+          "totalHours": 25,
+          "difficulty": "intermediário",
+          "lessons": [
+            {
+              "order": "1",
+              "title": "Introdução ao React",
+              "url": "https://exemplo.com/introducao-react",
+              "duration": "5 horas",
+              "author": "Autor Exemplo",
+              "category": "Frontend",
+              "summary": "Explica os conceitos fundamentais de componentes, estado e propriedades no React."
+            }
+          ]
         }
       ]
     }'
     TRILHA(meta: #META):#CONTEUDO
     Importante:
       - Mantenha o idioma original dos títulos.
-      - verifique se os links estão acessíveis e corretos.
+      - Verifique se os links estão acessíveis e corretos.
       - NÃO inclua comentários ou textos fora do JSON.
-      - O tamanho maxima da lista deve ser de 10 itens.
+      - O número máximo de módulos deve ser de 5 e cada módulo pode ter até 10 lições.
       - Valide o formato JSON antes de retornar.
+      - Todos os campos são obrigatórios: title, goal, description, moduleCount, totalHours, difficulty, modules.
+      - Cada módulo deve ter: title, order, description, lessonCount, totalHours, difficulty, lessons.
+      - Cada lição deve ter: order, title, url, duration, author, category, summary.
+      - Se não for possível determinar a duration, fornece uma estimativa de tempo de leitura.
+      - Se não for possível determinar o author, fornece "Desconhecido".
+      - Se o url for inacessível, não inclua o item na lista.
 `;
 
 export const PROMPT_NEWS_DISCOVERY = `
@@ -98,12 +173,20 @@ export const PROMPT_NEWS_DISCOVERY = `
      - Atualidade (mais recentes primeiro).
      - Relevância direta com o interesse.
      - Fontes confiáveis (sites de notícia, portais reconhecidos, blogs especializados).
-  2. Para cada notícia selecionada:
-     - Gere um resumo breve, de no máximo 2 frases.
-     - Mantenha o idioma original do título.
-     - Verifique se o link está acessível e correto.
-  3. Retorne apenas um JSON válido, sem texto extra.
-  4. Se nenhuma notícia relevante for encontrada, retorne: '[]'.
+  2. Para cada notícia selecionada, inclua todos os campos obrigatórios:
+     - "title": título da notícia.
+     - "link": URL completa e válida da notícia.
+     - "summary": resumo breve de no máximo 2 frases.
+     - "interest": interesse relacionado (pode ser o mesmo #TOPIC fornecido).
+     - "category": categoria temática (ex.: "tecnologia", "saúde", "educação", "ciência").
+     - "readTime": tempo estimado de leitura no formato string (ex.: "3 min", "5 minutos").
+     - "publishedAt": data de publicação no formato string (ex.: "2025-01-15" ou "15/01/2025").
+     - "trending": valor booleano (true/false) indicando se a notícia está em alta/trending.
+     - "author": nome do autor ou fonte da notícia.
+  3. Mantenha o idioma original do título.
+  4. Verifique se o link está acessível e correto.
+  5. Retorne apenas um JSON válido, sem texto extra.
+  6. Se nenhuma notícia relevante for encontrada, retorne: '[]'.
 
   Formato de saída esperado (exemplo):
   '[
@@ -111,21 +194,35 @@ export const PROMPT_NEWS_DISCOVERY = `
       "title": "Avanços da inteligência artificial na medicina em 2025",
       "link": "https://exemplo.com/ia-medicina",
       "summary": "Reportagem sobre novas aplicações da IA em diagnósticos médicos e análise de exames.",
-      "interest": "inteligência artificial na medicina"
+      "interest": "inteligência artificial na medicina",
+      "category": "tecnologia",
+      "readTime": "5 min",
+      "publishedAt": "2025-01-15",
+      "trending": true,
+      "author": "Portal de Notícias"
     },
     {
       "title": "IA revoluciona o ensino superior",
       "link": "https://exemplo.com/ia-educacao",
       "summary": "Universidades adotam modelos generativos para personalizar o aprendizado e automatizar tarefas acadêmicas.",
-      "interest": "inteligência artificial na medicina"
+      "interest": "inteligência artificial na medicina",
+      "category": "educação",
+      "readTime": "4 min",
+      "publishedAt": "2025-01-10",
+      "trending": false,
+      "author": "Jornal Educacional"
     }
   ]'
 
   Importante:
       - Mantenha o idioma original dos títulos.
-      - verifique se os links estão acessíveis e corretos.
+      - Verifique se os links estão acessíveis e corretos.
       - NÃO inclua comentários ou textos fora do JSON.
-      - O tamanho maxima da lista deve ser de 2 itens.
+      - O tamanho máximo da lista deve ser de 2 itens.
       - Valide o formato JSON antes de retornar.
-  
+      - Todos os campos são obrigatórios: title, link, summary, interest, category, readTime, publishedAt, trending, author.
+      - O campo "trending" deve ser um valor booleano (true ou false).
+      - Se não for possível determinar o readTime, fornece uma estimativa de tempo de leitura.
+      - Se não for possível determinar o author, fornece "Desconhecido".
+      - Se o link for inacessível, não inclua o item na lista.
 `;

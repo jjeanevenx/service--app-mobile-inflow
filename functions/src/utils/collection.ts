@@ -1,11 +1,11 @@
-const colTrilhas = "trilhas";
-const colConteudosRecomendados = "conteudos_recomendados";
-const colUsuarios = "usuarios";
-const colUltimasNoticias = "ultimas_noticias";
+const colTrilhas = 'trilhas';
+const colConteudosRecomendados = 'conteudos_recomendados';
+const colUsuarios = 'usuarios';
+const colUltimasNoticias = 'ultimas_noticias';
 
-export { 
-    colTrilhas,
-    colConteudosRecomendados,
-    colUsuarios,
-    colUltimasNoticias 
-    };
+export {
+  colTrilhas,
+  colConteudosRecomendados,
+  colUsuarios,
+  colUltimasNoticias,
+};
