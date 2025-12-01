@@ -3,15 +3,16 @@ import {getByIdAndField, addDocument, deleteByField} from '../utils/firestoreHel
 import {logger} from '../utils/logger';
 import {learningPath} from '../ai/services/learningPathService';
 import {colTrilhas, colConteudosRecomendados} from '../utils/collection';
-
+import {DatabaseName} from '../utils/database';
 /**
  * Disparada sempre que o campo "metas" de um usuário for alterado.
  */
 export const onUserGoalsChange = functions.firestore
-    .database('(default)')
+    .database(DatabaseName)
     .document('usuarios/{uid}')
     .onUpdate(async (change, context) => {
       try {
+        functions.runWith({timeoutSeconds: 540});
         const before = change.before.data();
         const after = change.after.data();
         const userId = context.params.uid;

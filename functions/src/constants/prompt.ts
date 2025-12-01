@@ -1,6 +1,5 @@
 export const PROMPT_CONTENT_CURATOR = `
     Você é um curador de conteúdo digital especializado em busca de conteúdos relevantes na internet.
-
     Tarefa:
     Com base no(s) interesse(s) do usuário: #TOPIC, realize uma busca na web para identificar os conteúdos mais pertinentes e úteis.
 

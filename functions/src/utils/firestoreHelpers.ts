@@ -8,7 +8,7 @@ const app = initializeApp({
   credential: admin.credential.applicationDefault(),
 });
 
-const db = getFirestore(app, DatabaseName.default);
+const db = getFirestore(app, DatabaseName);
 
 export async function getByIdAndField(collection: string, queryField: { id: string, name: string; value: any }) {
   return await db

@@ -21,7 +21,6 @@
       "port": 5001
     },
     "firestore": {
-      "database":  "db-content-curation",
       "port": 8080
     },
     "pubsub": {

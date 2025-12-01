@@ -3,9 +3,13 @@ import {contentCurator} from '../ai/services/contentCuratorService';
 import {addDocument} from '../utils/firestoreHelpers';
 import {logger} from '../utils/logger';
 import {colConteudosRecomendados} from '../utils/collection';
+import {DatabaseName} from '../utils/database';
+
+
+functions.runWith({timeoutSeconds: 540});
 
 export const onUserInterestChange = functions.firestore
-    .database('(default)')
+    .database(DatabaseName)
     .document('usuarios/{userId}')
     .onWrite(async (change, context) => {
       try {
