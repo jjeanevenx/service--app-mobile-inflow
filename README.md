@@ -28,6 +28,8 @@ O serviço processa eventos do Firebase para:
 - Node.js v22
 - Firebase CLI instalado e autenticado
 - Projeto Firebase configurado (`service-app-mobile-inflow`)
+- Criar um database com o nome `db-content-curation` no firebase
+- Habilitar o provedor E-mail/senha no firebase Authentication
 
 ### Configuração Inicial
 
@@ -39,9 +41,12 @@ npm install
 # 2. Autenticar no Firebase (se ainda não fez)
 firebase login
 
-# 3. Definir projeto (se necessário)
+# 3. Definir projeto
 firebase use default
 ```
+
+
+
 
 ### Executar Localmente
 
@@ -63,7 +68,7 @@ npm run shell
 
 1. **`onUserCreate`**: Crie um usuário no emulador Auth via Firebase Console UI
 2. **`onUserInterestChange`**: Atualize o campo `interests` de um documento em `usuarios/{userId}` no Firestore
-3. **`onUserGoalsChange`**: Atualize o campo `metas` de um documento em `usuarios/{userId}`
+3. **`onUserGoalsChange`**: Atualize o campo `goals` de um documento em `usuarios/{userId}`
 4. **`scheduledNewsDiscovery`**: Execute manualmente via shell ou aguarde o agendamento do emulador
 
 ### Variáveis de Ambiente

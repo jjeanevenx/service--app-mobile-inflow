@@ -1,1 +1,1 @@
-export const DatabaseName ={default: '(default)', dbName: 'db-content-curation'};
+export const DatabaseName ='db-content-curation';
