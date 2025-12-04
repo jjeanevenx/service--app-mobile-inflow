@@ -10,12 +10,13 @@ functions.runWith({timeoutSeconds: 540});
 
 export const onUserInterestChange = functions.firestore
     .database(DatabaseName)
-    .document('usuarios/{userId}')
+    .document('usuarios/{uid}')
     .onWrite(async (change, context) => {
       try {
         const before = change.before.data();
         const after = change.after.data();
-        const userId = context.params.userId;
+
+        const userId = before?.uid || context.params.uid;
 
         const beforeInterests = before?.interests || [];
         const afterInterests = after?.interests || [];
@@ -36,7 +37,7 @@ export const onUserInterestChange = functions.firestore
         await addDocument(colConteudosRecomendados, {userId, ...curatedContent});
         logger.info('Curadoria concluída para', userId);
       } catch (error) {
-        logger.err(`Erro ao processar interesses do usuário ${context.params.userId}:`, error);
+        logger.err(`Erro ao processar interesses do usuário ${context.params.uid}:`, error);
         throw error;
       }
     });
